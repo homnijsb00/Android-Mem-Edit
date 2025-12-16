@@ -76,4 +76,4 @@ jobs:
       with:
         name: android-so-files
         path: |
-          artifacts/**/*.so
+          artifacts/**/*.so 
