@@ -1,3 +1,37 @@
+// 在 main.cpp 开头添加
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// 将所有需要导出的函数声明放在这里
+int getPID(PACKAGENAME *PackageName);
+int StopPID(int pid);
+int ResetFromStopPID(int pid);
+MAR* SetMemorySearchRange(int type, int pid);
+MAFS* UnionSearch_First(int Rangetype, int pid, const char* value, int ValueType);
+MAFS* UnionSearch_Filter_value(MAFS* Head, int pid, const char* value, int ValueType);
+MAFS* UnionSearch_Filter_Rangevalue(MAFS* Head, int pid, const char* value, int ValueType);
+MAFS* OFFSETSearch_First(int Rangetype, int pid, const char* value, int ValueType);
+MAFS* OFFSETSearch_value(MAFS* Head, int pid, const char* value, int ValueType, int offset);
+bool EditMemory(MAFS* Head, int pid, const char* value, int ValueType, int WantedEditAddressCout);
+int GetListNodeLen(MAFS* m_pHead);
+void Print_Linked_list_MAFS(MAFS* HEAD);
+void ClearMyList(MAR** ppHeadNode);
+
+#ifdef __cplusplus
+}
+#endif
+
+// 然后在 main.cpp 的 main 函数上方，添加实际函数定义（使用 extern "C" 包装）
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+
+
+
+
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
