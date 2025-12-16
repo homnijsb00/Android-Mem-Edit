@@ -1,3 +1,4 @@
+
 name: Build Android SO
 
 on:
@@ -66,7 +67,6 @@ jobs:
     - name: Collect libs into artifacts dir
       run: |
         mkdir -p artifacts
-        # copy preserving relative path so you can inspect where they came from
         find build -type f -name '*.so' -exec cp --parents {} artifacts/ \; || true
         echo "Copied to artifacts/:"
         ls -R artifacts || true
