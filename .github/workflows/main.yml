@@ -37,8 +37,9 @@ jobs:
           -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
           -DANDROID_ABI=arm64-v8a \
           -DANDROID_PLATFORM=android-21 \
-          -DCMAKE_BUILD_TYPE=Release
-        make -j$(nproc)
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=${PWD}
+        cmake --build . --config Release -- -j$(nproc) VERBOSE=1
 
     - name: Build for ARM
       run: |
@@ -51,20 +52,28 @@ jobs:
           -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
           -DANDROID_ABI=armeabi-v7a \
           -DANDROID_PLATFORM=android-21 \
-          -DCMAKE_BUILD_TYPE=Release
-        make -j$(nproc)
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=${PWD}
+        cmake --build . --config Release -- -j$(nproc) VERBOSE=1
 
     - name: List build artifacts
       run: |
-        echo "Found .so files:"
+        echo "Find all .so files under build/:"
         find build -type f -name '*.so' -print || true
         echo "Full build tree:"
         ls -R build || true
+
+    - name: Collect libs into artifacts dir
+      run: |
+        mkdir -p artifacts
+        # copy preserving relative path so you can inspect where they came from
+        find build -type f -name '*.so' -exec cp --parents {} artifacts/ \; || true
+        echo "Copied to artifacts/:"
+        ls -R artifacts || true
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: android-so-files
         path: |
-          build/*/libmemedit.so
-          build/*/*.so
+          artifacts/**/*.so
